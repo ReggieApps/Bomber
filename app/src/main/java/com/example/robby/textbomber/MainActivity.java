@@ -2,36 +2,46 @@ package com.example.robby.textbomber;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.telephony.SmsManager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Button pissOffButton;
+
+    private EditText vicNumber;
+    private EditText vicMessage;
+    private EditText vicAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+        pissOffButton = (Button) findViewById(R.id.button_piss_off);
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        vicNumber = (EditText) findViewById(R.id.edittext_number);
+        vicMessage = (EditText) findViewById(R.id.edittext_message);
+        vicAmount = (EditText) findViewById(R.id.edittext_number_of_times);
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        pissOffButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //when we click the button, THIS CODE BELOW executes
+                String phoneNumber = vicNumber.getText().toString();
+                String message = vicMessage.getText().toString();
+                int spamCount = Integer.parseInt(vicAmount.getText().toString());
 
-        return super.onOptionsItemSelected(item);
+                SmsManager manager = SmsManager.getDefault();
+
+                for(int i = 0; i < spamCount; i++){
+                    manager.sendTextMessage(phoneNumber, null, message, null, null);
+                }
+
+                //END EXECUTION FOR BUTTON CLICK
+            }
+        });
     }
 }
